@@ -1,4 +1,5 @@
-
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "./firebase";
 import React, { useState, useMemo } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -78,15 +79,26 @@ const App: React.FC = () => {
     }
   };
 
-  const handleAddNewListing = (newListingData: Omit<Listing, 'id' | 'user' | 'imageUrl'>) => {
-    if (!currentUser) return;
-    
-    const listingUser: ListingUser = {
-      id: currentUser.id,
-      name: currentUser.name,
-      avatarUrl: currentUser.avatarUrl,
-    };
+  const handleAddNewListing = async (newListingData) => {
+  if (!currentUser) return;
 
+  try {
+    console.log("Adding to Firebase:", newListingData);
+
+    await addDoc(collection(db, "listings"), {
+      ...newListingData,
+      userId: currentUser.id,
+      userName: currentUser.name,
+      userAvatar: currentUser.avatarUrl,
+      createdAt: new Date()
+    });
+
+    console.log("✅ Listing added to Firebase");
+
+  } catch (error) {
+    console.error("❌ Error adding listing:", error);
+  }
+};
     const newListing: Listing = {
       ...newListingData,
       id: Date.now(),
