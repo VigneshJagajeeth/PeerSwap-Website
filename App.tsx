@@ -95,6 +95,21 @@ const App: React.FC = () => {
 
     console.log("✅ Listing added to Firebase");
 
+    // 🔥 THIS PART → paste here (INSIDE try, AFTER addDoc)
+    setAllListings(prev => [
+      {
+        ...newListingData,
+        id: Date.now(),
+        user: {
+          id: currentUser.id,
+          name: currentUser.name,
+          avatarUrl: currentUser.avatarUrl
+        },
+        imageUrl: `https://picsum.photos/seed/${Date.now()}/600/400`
+      },
+      ...prev
+    ]);
+
   } catch (error) {
     console.error("❌ Error adding listing:", error);
   }
