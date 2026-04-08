@@ -114,25 +114,7 @@ const App: React.FC = () => {
     console.error("❌ Error adding listing:", error);
   }
 };
-    const newListing: Listing = {
-      ...newListingData,
-      id: Date.now(),
-      user: listingUser,
-      imageUrl: `https://picsum.photos/seed/${Date.now()}/600/400`,
-    };
-
-    // Update global listings
-    setAllListings(prev => [newListing, ...prev]);
-
-    // Update user's listings in the allUsers state
-    setAllUsers(prevUsers => prevUsers.map(user => {
-      if (user.id === currentUser.id) {
-        return { ...user, listings: [newListing, ...user.listings] };
-      }
-      return user;
-    }));
-  };
-
+   
   const handleUserSelect = (user: ListingUser) => {
     setSelectedProfileId(user.id);
     setSelectedListing(null);
